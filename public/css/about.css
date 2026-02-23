@@ -106,7 +106,7 @@ body {
 /* --- Desktop Styles (Original) --- */
 .who-we-are-section {
     padding: 100px 0;
-    overflow: visible; 
+    /* overflow: visible;  */
 }
 
 .blob-wrapper {
