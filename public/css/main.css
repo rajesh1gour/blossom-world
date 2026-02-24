@@ -17,7 +17,7 @@
 /* --- 2. Fixed & Floating Elements --- */
 .fixed-left-social {
     position: fixed;
-    top: 50%;
+    top: 70%;
     left: 0;
     transform: translateY(-50%);
     z-index: 9999;
