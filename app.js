@@ -9,7 +9,7 @@ const path = require("path");
 const engine = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo').default;
 const passport = require('passport');
 const methodOverride = require('method-override');
 const LocalStrategy = require('passport-local');
@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // --- 4. Mongo Session Store Setup ---
-const store = MongoStore.create({
+const store = new MongoStore({
     mongoUrl: dbURI,
     touchAfter: 24 * 3600,
     crypto: {
@@ -47,16 +47,17 @@ store.on("error", function(e) {
 });
 
 const sessionOptions = {
-    store: store, // Using MongoStore instead of MemoryStore
+    store: store, 
     name: 'session',
     secret: process.env.SESSION_SECRET || "TUISAdminSecretKey",
     resave: false,
-    saveUninitialized: true,
-    proxy: true, // Required for Render/Heroku HTTPS
+    saveUninitialized: false, // Changed to false: Better for production/privacy
+    proxy: true, 
     cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Secure cookies on live site
-        expires: Date.now() + 7 * 24 * 60 * 60 * 1000, 
+        secure: process.env.NODE_ENV === "production", 
+        // Use a Date object for expires
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), 
         maxAge: 7 * 24 * 60 * 60 * 1000,
         sameSite: 'lax'
     }
