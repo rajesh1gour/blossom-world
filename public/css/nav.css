@@ -199,14 +199,39 @@
         opacity: 0;
         transform: translateX(10px) !important; /* Slide-in effect */
         transition: all 0.3s ease;
+        position: absolute;
+        min-width: 220px;
+        z-index: 1001;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15) !important;
     }
 
-    /* Trigger the second-level menu on hover */
+    /* Show submenu on hover or click (via JavaScript) */
     .dropdown-submenu:hover > .dropdown-menu {
         visibility: visible !important;
         opacity: 1 !important;
         transform: translateX(0) !important;
         pointer-events: auto !important;
+    }
+    
+    .dropdown-submenu > .dropdown-menu[style*="visibility: visible"] {
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: translateX(0) !important;
+        pointer-events: auto !important;
+    }
+    
+    /* Arrow indicator for Message button */
+    .dropdown-submenu > .dropdown-toggle::after {
+        content: '';
+        border: solid #333;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 3px;
+        transform: rotate(-45deg);
+        margin-left: 8px;
     }
 }
 

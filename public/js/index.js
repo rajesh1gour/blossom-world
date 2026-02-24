@@ -93,3 +93,65 @@ setInterval(animateBlob, 2500);
     }, { threshold: 0.5 });
 
     counters.forEach(counter => observer.observe(counter));
+
+// Handle nested submenu for desktop and mobile
+document.addEventListener('DOMContentLoaded', function () {
+    const submenuItems = document.querySelectorAll('.dropdown-submenu');
+    
+    submenuItems.forEach(item => {
+        const toggle = item.querySelector('.dropdown-toggle');
+        const submenu = item.querySelector('.dropdown-menu');
+        
+        if (!toggle || !submenu) return;
+        
+        // Prevent default link behavior
+        toggle.addEventListener('click', function(e) {
+            // Only prevent default on desktop (991px+)
+            if (window.innerWidth >= 992) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Toggle submenu visibility
+                const isVisible = submenu.style.visibility === 'visible';
+                if (isVisible) {
+                    submenu.style.visibility = 'hidden';
+                    submenu.style.opacity = '0';
+                    submenu.style.pointerEvents = 'none';
+                } else {
+                    submenu.style.visibility = 'visible';
+                    submenu.style.opacity = '1';
+                    submenu.style.pointerEvents = 'auto';
+                }
+            }
+        });
+        
+        // Hover effect on desktop
+        if (window.innerWidth >= 992) {
+            item.addEventListener('mouseenter', function() {
+                submenu.style.visibility = 'visible';
+                submenu.style.opacity = '1';
+                submenu.style.pointerEvents = 'auto';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                submenu.style.visibility = 'hidden';
+                submenu.style.opacity = '0';
+                submenu.style.pointerEvents = 'none';
+            });
+        }
+    });
+    
+    // Close submenu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown-submenu')) {
+            submenuItems.forEach(item => {
+                const submenu = item.querySelector('.dropdown-menu');
+                if (submenu) {
+                    submenu.style.visibility = 'hidden';
+                    submenu.style.opacity = '0';
+                    submenu.style.pointerEvents = 'none';
+                }
+            });
+        }
+    });
+});
